@@ -1,26 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//  @note   http://nanoappli.com/blog/archives/6511
+
+using System.Collections;
 using UnityEngine;
 
 public class Logger : MonoBehaviour
 {
-
     // ログの記録
-    //private static List<string> logMsg_ = new List<string>();
     private static Hashtable logMsg_ = new Hashtable();
     private static int logCnt_;
+
     public static int Log(string argMeg)
     {
-        logMsg_.Add(logCnt_++, argMeg);
+        logMsg_.Add(++logCnt_, argMeg);
         return logCnt_;
     }
     public static void RemoveLog(int argIndex)
     {
-        logMsg_.Remove(argIndex - 1);
+        logMsg_.Remove(argIndex);
     }
 
     // 記録されたログを画面出力する
-    void OnGUI()
+    private void OnGUI()
     {
         Rect rect = new Rect(0, 0, Screen.width, Screen.height);
 

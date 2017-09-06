@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestPlayer : MonoBehaviour
+public class TestPlayer : Charcter
 {
-    bool isHitting_ = false;
     float currentTime_ = 0f;
-    int logNum_;
 	void Start ()
     {
-		
 	}
 	
 	void Update ()
@@ -22,7 +19,7 @@ public class TestPlayer : MonoBehaviour
         {
             currentTime_ = 0f;
             isHitting_ = false;
-            Logger.RemoveLog(logNum_);
+            base.RemoveLog(1);
         }
 	}
 
@@ -34,7 +31,7 @@ public class TestPlayer : MonoBehaviour
                 return;
 
             string msg = collision.gameObject.transform.parent.parent.GetComponent<BaseEnemy>().Power.ToString();
-            logNum_ = Logger.Log("Enemy punch for Player!! " + msg + " Damage!!");
+            logNum_.Add(1, Logger.Log("Enemy punch for Player!! " + msg + " Damage!!"));
             isHitting_ = true;
         }
     }
