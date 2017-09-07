@@ -4,8 +4,9 @@ using UnityEngine;
 public class Charcter : MonoBehaviour
 {
     [SerializeField]
-    GameObject fist_;                                   //  !<  パンチオブジェクト
+    Weapon weapon_;                                     //  !<  武器
 
+    protected bool isLiving_;                           //  !<  生死判定フラグ
     protected bool isAttacking_ = false;                //  !<  攻撃中フラグ
     protected bool isHitting_ = false;                  //  !<  攻撃を受けたフラグ
     protected Rigidbody2D rigid2d_;                     //  !<  剛体
@@ -29,6 +30,16 @@ public class Charcter : MonoBehaviour
         get { return isAttacking_; }
         set { isAttacking_ = value; }
     }
+    public bool IsLiving
+    {
+        get { return isLiving_; }
+        set { isLiving_ = value; }
+    }
+    public int Life
+    {
+        get { return life_; }
+        set { life_ = value; }
+    }
     public Hashtable LogNumTable
     {
         get { return logNum_; }
@@ -38,6 +49,7 @@ public class Charcter : MonoBehaviour
     {
         rigid2d_ = GetComponent<Rigidbody2D>();
         direction_ = transform.localScale;
+        weapon_ = transform.GetChild(0).GetComponent<Weapon>();
         degree_ = 0f;
     }
 
@@ -54,7 +66,7 @@ public class Charcter : MonoBehaviour
             }
         }
     }
-
+#if false
     protected void Punch()
     {
         rigid2d_.velocity = new Vector2(0f, 0f);
@@ -73,7 +85,7 @@ public class Charcter : MonoBehaviour
         Destroy(fist, FistDestroyTime);
         logNum_.Add(0, Logger.Log("Attaking : Punch"));
     }
-
+#endif
     protected void RemoveLog(int argIndex)
     {
         Logger.RemoveLog((int)logNum_[argIndex]);
