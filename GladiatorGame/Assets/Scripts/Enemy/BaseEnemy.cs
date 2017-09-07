@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BaseEnemy : Charcter
+public class BaseEnemy : Charctor
 {
     int level_ = 0;
 
@@ -27,16 +27,34 @@ public class BaseEnemy : Charcter
         if (isAttacking_)
             return;
 
+        DebugNoticeLineRotate();
+
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Punch();
+            weapon_.Attack(this);
+            logNum_.Add(0, Logger.Log("Attaking : Punch"));
         }
+    }
+
+    void DebugNoticeLineRotate()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            weapon_.transform.localEulerAngles = new Vector3(weapon_.transform.localEulerAngles.x, weapon_.transform.localEulerAngles.y, weapon_.transform.localEulerAngles.z - 1);
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            weapon_.transform.localEulerAngles = new Vector3(weapon_.transform.localEulerAngles.x, weapon_.transform.localEulerAngles.y, weapon_.transform.localEulerAngles.z + 1);
+        }
+
     }
 
     void DebugMove()
     {
         if (isAttacking_)
             return;
+
         if (Input.GetKey(KeyCode.UpArrow))
         {
             rigid2d_.velocity = new Vector2(rigid2d_.velocity.x, spd_.y);
