@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Punch : Weapon
 {
-	void Start ()
+    void Start()
     {
-		
-	}
-	
-	void Update ()
+        weaponPrefab_ = Resources.Load(PrefabsPath + "Fist") as GameObject;
+    }
+
+void Update ()
     {
 		
 	}
