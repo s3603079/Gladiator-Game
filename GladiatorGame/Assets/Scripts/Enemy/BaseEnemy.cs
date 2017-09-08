@@ -29,7 +29,7 @@ public class BaseEnemy : Charcter
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Punch();
+            //Punch();
         }
     }
 

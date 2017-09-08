@@ -31,16 +31,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         if (player1)
         {
-            var pad1 = GamePad.GetState(GamePad.Index.One);
-            player1.Walk(pad1.LeftStickAxis.x);
-            player1.Jump(pad1.A);
-        }
-
-        if (player2)
-        {
-            var pad2 = GamePad.GetState(GamePad.Index.Two);
-            player2.Walk(pad2.LeftStickAxis.x);
-            player2.Jump(pad2.A);
+            var pad = GamePad.Index.One;
+            player1.Walk(GamePad.GetAxis(GamePad.Axis.LeftStick, pad).x);
+            player1.Jump(GamePad.GetButtonDown(GamePad.Button.A, pad));
+            player1.RotaShoulder(GamePad.GetAxis(GamePad.Axis.RightStick, pad));
+            player1.Attack(GamePad.GetTrigger(GamePad.Trigger.RightTrigger, pad));
         }
     }
 }
