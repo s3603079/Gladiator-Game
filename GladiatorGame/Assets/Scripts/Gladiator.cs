@@ -14,24 +14,25 @@ public class Gladiator : MonoBehaviour {
     private Rigidbody2D rb2d;
     private Vector3 velocity;
     private bool isGrounded;
+    private bool attackedReady;
+    private Transform shoulder;
+    private Transform arm;
+
+    private Vector2 armPos;
 
 	// Use this for initialization
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        shoulder = transform.GetChild(0);
+        arm = shoulder.GetChild(0);
+
+        armPos = arm.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        var mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //if (transform.position.x <= mPos.x)
-        //{
-        //    transform.localScale = new Vector2(+1F, transform.localScale.y);
-        //}
-        //else if (transform.position.x >= mPos.x)
-        //{
-        //    transform.localScale = new Vector2(-1F, transform.localScale.y);
-        //}
     }
 
     public void Walk(float inputValue) {
@@ -46,7 +47,35 @@ public class Gladiator : MonoBehaviour {
         }
     }
 
-    public void Attack() {
+    public void Attack(float InputValue) {
+        //if (InputValue > 0F)
+        //{
+        //    var armUp = new Vector2(arm.transform.up.x, arm.transform.up.y);
+        //    arm.position = Vector2.MoveTowards(armPos - armUp * 0.25F, armPos + armUp * 0.5F, InputValue);
+        //}
+        if (attackedReady && InputValue < 1F)
+        {
+            Debug.Log("Attack");
+        }
+        attackedReady = (InputValue >= 1F) ? true : false;
+    }
+
+    public void RotaShoulder(Vector2 InputAxis) {
+        // 入力軸の横方向で向きを決定
+        if(InputAxis.x <= -0.1F)
+        {
+            transform.localScale = new Vector3(-1F, transform.localScale.y);
+        }
+        else if(InputAxis.x >= 0.1f)
+        {
+            transform.localScale = new Vector3(+1F, transform.localScale.y);
+        }
+
+        // 入力軸の縦方向で角度を修正
+        //if (Mathf.Abs(InputAxis.y) >= 0.1F)
+        {
+            shoulder.localEulerAngles = (transform.forward * InputAxis.y * 90F) + transform.forward * 90F;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
