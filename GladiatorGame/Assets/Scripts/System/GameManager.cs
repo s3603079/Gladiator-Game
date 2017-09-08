@@ -23,4 +23,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	void Update () {
         time.text = "Time:" + (Time.time - timer).ToString("f1");
 	}
+
+    public float GetTime()
+    {
+        return Time.time - timer;
+    }
 }
