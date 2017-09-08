@@ -19,7 +19,7 @@ public class Health : MonoBehaviour {
     //体力を表示している
     [SerializeField]
     private Image _healthGauge;
-    //private Text _healthText;
+    RectTransform rt;
 
     //動きをつけた表示用
     private int _displayHealthPoint;
@@ -43,6 +43,8 @@ public class Health : MonoBehaviour {
         _healthPoint = _healthMax;//体力を最大値にする
         _displayHealthPoint = _healthPoint;
 
+        rt = _healthGauge.GetComponent<RectTransform>();
+
         //デバッグ用
         _hit = false;//デバッグ用のヒットフラグをFalseにする
         _time = 0f;
@@ -51,7 +53,7 @@ public class Health : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //プレイヤーの上に表示する
-        this.transform.position = Camera.main.WorldToScreenPoint(_model.transform.position + new Vector3(0f, 1.0f, 0f));
+        this.transform.position = Camera.main.WorldToScreenPoint(_model.transform.position + new Vector3(0f, 1.6f, 0f));
 
         //【統合用】プレイヤーのライフを常に受け取る
         _healthPoint = _chara.Life();
@@ -64,7 +66,8 @@ public class Health : MonoBehaviour {
 
         //体力の表示
         //_healthText.text = string.Format("{0:0000} / {1:0000}", _displayHealthPoint, _healthMax);
-        _healthGauge.transform.localScale = new Vector3((float)_displayHealthPoint / _healthMax,1.0f,1.0f);
+        float wid = Mathf.Clamp(((float)_displayHealthPoint / (float)_healthMax) * 95.0f, 0f, 95f);
+        rt.sizeDelta = new Vector2(wid, 6.0f);
 
         //デバッグ用【仮想ダメージ】
         _time += Time.deltaTime;

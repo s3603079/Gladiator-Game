@@ -21,7 +21,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	
 	// Update is called once per frame
 	void Update () {
-        time.text = "Time:" + (Time.time - timer).ToString("f1");
+        time.text = "TIME:" + (Time.time - timer).ToString("f1");
 	}
 
     public float GetTime()
