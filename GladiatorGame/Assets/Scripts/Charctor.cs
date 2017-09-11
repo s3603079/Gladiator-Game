@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Charcter : MonoBehaviour
+public class Charctor : MonoBehaviour
 {
     [SerializeField]
-    Weapon weapon_;                                     //  !<  武器
+    protected Weapon weapon_;                           //  !<  武器
 
     protected bool isLiving_;                           //  !<  生死判定フラグ
     protected bool isAttacking_ = false;                //  !<  攻撃中フラグ
@@ -12,7 +12,7 @@ public class Charcter : MonoBehaviour
     protected Rigidbody2D rigid2d_;                     //  !<  剛体
     protected Vector2 pos_;                             //  !<  座標
     protected Vector2 spd_;                             //  !<  移動速度
-    protected Vector2 direction_;                       //  !<  移動方向
+    protected Vector2 direction_;                       //  !<  画像の向き
     protected float degree_;                            //  !<  角度
     protected float power_;                             //  !<  攻撃力
     protected int life_;                                //  !<  耐久値
@@ -44,12 +44,15 @@ public class Charcter : MonoBehaviour
     {
         get { return logNum_; }
     }
+    public Rigidbody2D RigitBody2D
+    {
+        get { return rigid2d_; }
+    }
 
     protected void Start()
     {
         rigid2d_ = GetComponent<Rigidbody2D>();
         direction_ = transform.localScale;
-        weapon_ = transform.GetChild(0).GetComponent<Weapon>();
         degree_ = 0f;
     }
 
@@ -66,26 +69,7 @@ public class Charcter : MonoBehaviour
             }
         }
     }
-#if false
-    protected void Punch()
-    {
-        rigid2d_.velocity = new Vector2(0f, 0f);
-        GameObject fist = Instantiate(fist_, transform.position, Quaternion.identity) as GameObject;
-        float adjustPosition = fist.transform.localScale.x * 2;
-        if (transform.localScale.x < 0)
-        {
-            adjustPosition = -adjustPosition;
-            fist.transform.localScale = -fist.transform.localScale;
-        }
-        fist.transform.parent = this.transform;
-        fist.transform.position = new Vector3(transform.position.x - adjustPosition, transform.position.y, transform.position.z);
 
-        isAttacking_ = true;
-        const float FistDestroyTime = 1f;
-        Destroy(fist, FistDestroyTime);
-        logNum_.Add(0, Logger.Log("Attaking : Punch"));
-    }
-#endif
     protected void RemoveLog(int argIndex)
     {
         Logger.RemoveLog((int)logNum_[argIndex]);

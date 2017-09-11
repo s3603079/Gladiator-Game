@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestPlayer : Charcter
+public class TestPlayer : Charctor
 {
     float currentTime_ = 0f;
 	void Start ()
@@ -16,7 +16,7 @@ public class TestPlayer : Charcter
 
         currentTime_ += Time.deltaTime;
         if(currentTime_ > 1f)
-        {
+        {// 攻撃から1秒たったら非攻撃状態
             currentTime_ = 0f;
             isHitting_ = false;
             base.RemoveLog(1);
@@ -25,12 +25,12 @@ public class TestPlayer : Charcter
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        if (isHitting_)
+            return;
+
         if (collision.tag == "Fist")
         {
-            if (!collision.gameObject.transform.parent.parent)
-                return;
-
-            string msg = collision.gameObject.transform.parent.parent.GetComponent<BaseEnemy>().Power.ToString();
+            string msg = CharctorManager.Instance.Enemy.Power.ToString();
             logNum_.Add(1, Logger.Log("Enemy punch for Player!! " + msg + " Damage!!"));
             isHitting_ = true;
         }
