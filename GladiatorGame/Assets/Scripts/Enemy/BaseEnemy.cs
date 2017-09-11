@@ -20,7 +20,10 @@ public class BaseEnemy : Character
         ai_.Execute(this);
         base.Update();
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public bool IsMoveToPick()
     {
         bool res = true;
