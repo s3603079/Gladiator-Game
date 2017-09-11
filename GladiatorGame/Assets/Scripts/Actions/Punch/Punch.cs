@@ -1,22 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Punch : Weapon
 {
     void Start()
     {
-        weaponPrefab_ = Resources.Load(PrefabsPath + "Fist") as GameObject;
+        weaponDestroyTime_ = 1f;
+        attackedReach_ = 1.0f;
+        weakType_ = WeaponType.Sword;
+        strengthType_ = WeaponType.Shield;
+        thisType_ = WeaponType.Punch;
+        base.Start();
     }
 
-void Update ()
+    void Update ()
     {
-		
 	}
 
-    public void Attack(Charcter argCharcter)
-    {
-        base.Attack(argCharcter);
-        argCharcter.LogNumTable.Add(0, Logger.Log("Attaking : Punch"));
-    }
 }

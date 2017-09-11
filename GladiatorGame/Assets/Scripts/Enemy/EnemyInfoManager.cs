@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager
+public class EnemyInfoManager : SingletonMonoBehaviour<EnemyInfoManager>
 {
-    BaseEnemy entryEnemy_;  //  !<  現在画面に出ている敵
+    override protected void Awake()
+    {
+        base.Awake();
+    }
 
-	void Start ()
+    void Start ()
     {
 		
 	}

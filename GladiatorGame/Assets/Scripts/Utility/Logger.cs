@@ -6,17 +6,15 @@ using UnityEngine;
 public class Logger : MonoBehaviour
 {
     // ログの記録
-    private static Hashtable logMsg_ = new Hashtable();
-    private static int logCnt_;
+    static Hashtable logMsg_ = new Hashtable();
 
-    public static int Log(string argMeg)
+    public static void Log(object argKey, string argMeg)
     {
-        logMsg_.Add(++logCnt_, argMeg);
-        return logCnt_;
+        logMsg_.Add(argKey, argMeg);
     }
-    public static void RemoveLog(int argIndex)
+    public static void RemoveLog(object argKey)
     {
-        logMsg_.Remove(argIndex);
+        logMsg_.Remove(argKey);
     }
 
     // 記録されたログを画面出力する
