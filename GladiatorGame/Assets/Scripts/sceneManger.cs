@@ -7,7 +7,6 @@ public class sceneManger : MonoBehaviour {
 
     Scene currentScene;    
     string previousScene;
-    public Object thisObject;
     public string titleSceneName;
     public string singlePlayerSceneName;
     public string multiPlayerSceneName;
@@ -15,7 +14,7 @@ public class sceneManger : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Object.DontDestroyOnLoad(thisObject);
+        Object.DontDestroyOnLoad(gameObject);
 	}
 	
 	// Update is called once per frame
