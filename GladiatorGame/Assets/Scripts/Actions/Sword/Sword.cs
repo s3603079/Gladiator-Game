@@ -6,16 +6,16 @@ public class Sword : Weapon
 {
     void Start()
     {
-        weaponDestroyTime_ = 1f;
         attackedReach_ = 1.0f;
-        weakType_ = WeaponType.Bow;
-        strengthType_ = WeaponType.Punch;
+        weakToType_ = WeaponType.Bow;
+        strengthToType_ = WeaponType.Punch;
         thisType_ = WeaponType.Sword;
         base.Start();
     }
 
     void Update()
     {
+        base.Update();
     }
 
 }

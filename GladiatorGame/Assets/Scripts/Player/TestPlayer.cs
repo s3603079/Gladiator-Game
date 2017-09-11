@@ -4,34 +4,40 @@ using UnityEngine;
 
 public class TestPlayer : Character
 {
-    float currentInvisibleTime_ = 0f;
-    
-	void Start ()
+    bool canPick_ = false;                    //  !<  アイテムを拾えるかどうかのフラグ
+
+    void Start ()
     {
         spd_ = new Vector2(5f, 5f);
         base.Start();
         logRegistKey_[(int)LogNum.Attack] = "Player Attaking : ";
-        logRegistKey_[(int)LogNum.TakeDamage] = "Player TakeDamage : ";
+        logRegistKey_[(int)LogNum.TakeDamage] = "Enemy Attack for Player!! ";
     }
 
     void Update ()
     {
         DebugActions();
         base.Update();
+    }
 
-        if (!isHitting_)
+    protected override void ChoiceWeapon(WeaponType argWeaponType = WeaponType.Max, GameObject argGameObject = null)
+    {
+        if (!Input.GetKeyDown(KeyCode.E))
             return;
 
-        currentInvisibleTime_ += Time.deltaTime;
-        if(currentInvisibleTime_ > 1f)
-        {// 被ダメージ状態から1秒たったら普通の状態
-            currentInvisibleTime_ = 0f;
-            isHitting_ = false;
-            Logger.RemoveLog(logRegistKey_[(int)LogNum.TakeDamage]);
+        if (equipmentWeapon_.ThisWeaponType != WeaponType.Punch && !argGameObject)
+        {
+            //  TODO    :   武器のRelease
+            ChangeWeapon((int)WeaponType.Punch);
         }
-
+        else if (argGameObject)
+        {
+            //  TODO    :   武器のPick
+            base.ChoiceWeapon(argWeaponType, argGameObject);
+        }
     }
-    
+
+
     void DebugActions()
     {
         if (isAttacking_)
@@ -41,10 +47,13 @@ public class TestPlayer : Character
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            //  TODO    :   animation
-
             Attack();
         }
+
+
+        if (!canPick_)
+            ChoiceWeapon();
+        canPick_ = false;
     }
 
     void DebugNoticeLineRotate()
@@ -81,28 +90,11 @@ public class TestPlayer : Character
 
     void OnTriggerStay2D(Collider2D collision)
     {
-        //  TODO    :   add knock back
-        if (isHitting_)
-            return;
+        Weapon weapon = collision.gameObject.GetComponent<Weapon>();
+        if(weapon)
+            canPick_ = true;
 
-        string msg = null;
-        switch (collision.tag)
-        {// 他のオブジェクトとの当たりを考慮して面倒だけど一個ずつ処理分け
-
-            case "Fist":
-                msg = CharacterManager.Instance.Enemy.Power.ToString();
-                Logger.Log(logRegistKey_[(int)LogNum.TakeDamage], "Enemy Punch for Player!! " + msg + " Damage!!");
-                isHitting_ = true;
-                break;
-            case "Sword":
-                msg = CharacterManager.Instance.Enemy.Power.ToString();
-                Logger.Log(logRegistKey_[(int)LogNum.TakeDamage], "Enemy Sword for Player!! " + msg + " Damage!!");
-                isHitting_ = true;
-                break;
-
-            default:
-                break;
-        }
+        TriggerStay2D(weapon, collision);
     }
 
     void OnCollisionEnter2D(Collision2D collision)

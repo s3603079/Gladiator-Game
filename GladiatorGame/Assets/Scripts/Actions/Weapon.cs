@@ -12,12 +12,11 @@ public enum WeaponType
 
 public class Weapon : MonoBehaviour
 {
-    protected float weaponDestroyTime_;                         //  !<  武器の消滅時間
     protected float attackedReach_;                             //  !<  武器の届く距離
-    protected WeaponType weakType_, strengthType_, thisType_;   //  !<  武器の種類と相性
+    protected WeaponType weakToType_, strengthToType_, thisType_;   //  !<  武器の種類と相性
     
-    float currentDestroyTime_;                                  //  !<  武器の消滅するまでの時間
-    Rigidbody2D rigid2D_;                                       //  !<  武器のリジットボディ
+    float gravity_ = 0.0f;
+    float accel_ = 9.8f * 0.001f;
 
     public float AttackedReach
     {
@@ -27,43 +26,34 @@ public class Weapon : MonoBehaviour
     {
         get { return thisType_; }
     }
+    public WeaponType WeakWeaponType
+    {
+        get { return weakToType_; }
+    }
+    public WeaponType StrengthWeaponType
+    {
+        get { return strengthToType_; }
+    }
 
 
     protected void Start ()
     {
-        currentDestroyTime_ = weaponDestroyTime_;
-        rigid2D_ = GetComponent<Rigidbody2D>();
     }
 
     protected void Update ()
     {
-        if(--currentDestroyTime_ < 0)
+        if(!transform.parent)
         {
-            currentDestroyTime_ = weaponDestroyTime_;
-            gameObject.SetActive(false);
+            if (transform.position.y >= -4.0f)
+            {// 地面に落ちるまで落下
+                gravity_ -= accel_;
+                transform.position = new Vector2(transform.position.x, transform.position.y + gravity_);
+            }
+            else
+            {// 地面に落ちたらマネージャーに登録
+                WeaponManager.Instance.ActiveWeapon = this;
+            }
         }
 	}
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        //  装備されていたら判定なし
-        if (gameObject.transform.parent)
-            return;
-
-        if (!WeaponManager.Instance.ActiveWeapon && collision.gameObject.tag == "Ground")
-        {// 接地処理
-            rigid2D_.gravityScale = 0.0f;
-            rigid2D_.velocity = new Vector2(0.0f, 0.0f);
-            WeaponManager.Instance.ActiveWeapon = this;
-        }
-
-        //  キャラクターが取得したら
-        var charcter = collision.gameObject.GetComponent<Character>();
-        if (!charcter)
-            return;
-
-        charcter.ChangeWeapon(thisType_);
-        WeaponManager.Instance.RemoveActiveWeapon(gameObject);
-    }
 
 }
