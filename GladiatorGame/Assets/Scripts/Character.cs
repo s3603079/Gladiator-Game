@@ -9,14 +9,9 @@ enum LogNum
     Max,
 }
 
-
 public class Character : MonoBehaviour
 {
     protected Weapon equipmentWeapon_;                  //  !<  装備している武器
-    protected GameObject []weaponGroup_ = new GameObject[(int)WeaponType.Max];  //  !<  所持している武器の一覧
-    protected Weapon []weaponGroupType_ = new Weapon[(int)WeaponType.Max];      //  !<  所持している武器の種類の一覧
-    protected WeaponType equipmentWeaponType_;          //  !<  装備している武器の種類
-
     protected bool isLiving_;                           //  !<  生死判定フラグ
     protected bool isAttacking_ = false;                //  !<  攻撃中フラグ
     protected bool isHitting_ = false;                  //  !<  攻撃を受けたフラグ
@@ -28,11 +23,13 @@ public class Character : MonoBehaviour
     protected float power_;                             //  !<  攻撃力
     protected int life_;                                //  !<  耐久値
     protected bool isJumping_ = false;                  //  !<  ジャンプ中フラグ
+    protected float currentInvisibleTime_ = 0f;         //  !<  被ダメージフラグ
+    protected object[] logRegistKey_ = new object[(int)WeaponType.Max];
 
     const float AttackFinishFrame_ = 60;                //  !<  攻撃終了時間
     float currentAttackFrame_ = AttackFinishFrame_;     //  !<  現在の攻撃時間
 
-    protected object[] logRegistKey_ = new object[(int)WeaponType.Max];
+    Weapon[] weaponGroupType_ = new Weapon[(int)WeaponType.Max];      //  !<  所持している武器の種類の一覧
 
     public Vector2 Spd
     {
@@ -49,8 +46,7 @@ public class Character : MonoBehaviour
     }
     public WeaponType EquipmentWeaponType
     {
-        get { return equipmentWeaponType_; }
-        set { equipmentWeaponType_ = value; }
+        get { return equipmentWeapon_.ThisWeaponType; }
     }
     public float Power
     {
@@ -85,37 +81,32 @@ public class Character : MonoBehaviour
         direction_ = transform.localScale;
         degree_ = 0f;
 
-        weaponGroup_[(int)WeaponType.Punch] = transform.GetChild(0).gameObject;
-        weaponGroup_[(int)WeaponType.Sword] = transform.GetChild(1).gameObject;
+        weaponGroupType_[(int)WeaponType.Punch] = transform.GetChild(0).gameObject.GetComponent<Weapon>();
+        weaponGroupType_[(int)WeaponType.Sword] = transform.GetChild(1).gameObject.GetComponent<Weapon>();
 
         //  TODO    :   未実装
         //weaponGroup_[(int)WeaponType.Shield] = transform.GetChild(2).gameObject;
         //weaponGroup_[(int)WeaponType.Bow] = transform.GetChild(3).gameObject;
 
-        equipmentWeapon_ = weaponGroup_[(int)WeaponType.Punch].GetComponent<Weapon>();
-        equipmentWeaponType_ = equipmentWeapon_.ThisWeaponType;
+        equipmentWeapon_ = weaponGroupType_[(int)WeaponType.Punch].GetComponent<Weapon>();
 
         for (int lWeaponType = 0; lWeaponType < (int)WeaponType.Max; lWeaponType++)
         {// パンチ以外の武器を停止
 
-            if (!weaponGroup_[lWeaponType])
+            if (!weaponGroupType_[lWeaponType] ||
+                lWeaponType == (int)WeaponType.Punch)
                 continue;
 
-            weaponGroupType_[lWeaponType] = weaponGroup_[lWeaponType].GetComponent<Weapon>();
-
-            if (lWeaponType == (int)WeaponType.Punch)
-                continue;
-
-            weaponGroup_[lWeaponType].SetActive(false);
+            weaponGroupType_[lWeaponType].gameObject.SetActive(false);
         }
-#if false
-        weaponGroup_[(int)WeaponType.Punch].SetActive(false);
-        weaponGroup_[(int)WeaponType.Sword].SetActive(true);
-#endif
     }
-
     protected void Update()
     {
+        if(life_ <= 0)
+        {// 死亡処理
+            isLiving_ = false;
+        }
+
         pos_ = transform.position;
         if (isAttacking_)
         {
@@ -126,11 +117,29 @@ public class Character : MonoBehaviour
                 Logger.RemoveLog(logRegistKey_[(int)LogNum.Attack]);
             }
         }
+
+        if (!isHitting_)
+            return;
+
+        currentInvisibleTime_ += Time.deltaTime;
+        if (currentInvisibleTime_ > 1f)
+        {// 被ダメージ状態から1秒たったら普通の状態
+            currentInvisibleTime_ = 0f;
+            isHitting_ = false;
+            Logger.RemoveLog(logRegistKey_[(int)LogNum.TakeDamage]);
+        }
+    }
+
+    protected virtual void ChoiceWeapon(WeaponType argWeaponType = WeaponType.Max, GameObject argGameObject = null)
+    {
+        ChangeWeapon((int)argWeaponType);
+        WeaponManager.Instance.RemoveActiveWeapon(argGameObject);
     }
 
     public virtual void Attack()
     {
-        // TODO    :   武器のON、OFF
+        //  TODO    :   武器の当たり判定のON、OFF
+        //  TODO    :   animation
 
         rigid2d_.velocity = new Vector2(0, 0);
         isAttacking_ = true;
@@ -138,22 +147,35 @@ public class Character : MonoBehaviour
         Logger.Log(logRegistKey_[(int)LogNum.Attack], logRegistKey_[(int)LogNum.Attack] + weaponTypeName);
     }
 
-    public void ChangeWeapon(WeaponType argWeaponType)
+    public void ChangeWeapon(int argWeaponTypeIndex)
     {
         //  現在の武器をシャットダウン
         equipmentWeapon_.gameObject.SetActive(false);
-        switch(argWeaponType)
-        {//  指定の武器をスタートアップ
-            case WeaponType.Sword:
-                weaponGroup_[(int)WeaponType.Sword].SetActive(true);
-                equipmentWeapon_ = weaponGroupType_[(int)WeaponType.Sword];
-                break;
-            case WeaponType.Shield:
 
-                break;
-            case WeaponType.Bow:
+        //  指定の武器をスタートアップ
+        weaponGroupType_[argWeaponTypeIndex].gameObject.SetActive(true);
+        equipmentWeapon_ = weaponGroupType_[argWeaponTypeIndex];
 
-                break;
+    }
+
+    protected void TriggerStay2D(Weapon argWeapon, Collider2D argCollision)
+    {
+        if (argWeapon && !argCollision.gameObject.transform.parent)
+        {// 落ちている武器に触れていれば
+            ChoiceWeapon(argWeapon.ThisWeaponType, argCollision.gameObject);
         }
+        //  TODO    :   add knock back
+        if (isHitting_)
+            return;
+
+        //  落ちている武器ではダメージは無し
+        if (!argCollision.gameObject.transform.parent)
+            return;
+
+        string msg = null;
+
+        msg = CharacterManager.Instance.Enemy.Power.ToString();
+        Logger.Log(logRegistKey_[(int)LogNum.TakeDamage], argCollision.tag + " : " + logRegistKey_[(int)LogNum.TakeDamage] + msg + " Damage!!");
+        isHitting_ = true;
     }
 }
