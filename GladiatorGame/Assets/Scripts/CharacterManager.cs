@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CharctorManager : SingletonMonoBehaviour<CharctorManager>
+public class CharacterManager : SingletonMonoBehaviour<CharacterManager>
 {
     List<TestPlayer> playerList_ = new List<TestPlayer>();
     BaseEnemy enemy_;
@@ -17,17 +17,18 @@ public class CharctorManager : SingletonMonoBehaviour<CharctorManager>
         get { return playerList_; }
     }
 
-    void Awake()
+    override protected void Awake()
     {
         base.Awake();
-    }
-
-    void Start()
-    {
         //if(SceneManager.GetActiveScene().name == "Play")
         //{//   プレイシーンに入ったらオブジェクト格納
         //}
         //  HACK    :   デバックシーンの為、仮の処理
+
+    }
+
+    void Start()
+    {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         foreach (var player in players)

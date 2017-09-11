@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyInfoManager : SingletonMonoBehaviour<EnemyInfoManager>
 {
-    void Awake()
+    override protected void Awake()
     {
         base.Awake();
     }
