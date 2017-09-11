@@ -55,7 +55,6 @@ public class WeaponManager : SingletonMonoBehaviour<WeaponManager>
         GameObject weapon = weaponGruop_[(int)argWeaponType];
         Weapon weaponType = weaponTypeGruop_[(int)argWeaponType];
 
-        Camera.main.pixelWidth;
         float testRandom = Random.Range(-5, 5);   //  !<  HACK  :   仮
         Vector3 pos = new Vector3(0, 5, 0);
         weapon = Instantiate(weapon, pos, Quaternion.identity);
