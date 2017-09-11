@@ -25,7 +25,6 @@ public class Health : MonoBehaviour {
     private int _displayHealthPoint;
 
     //デバッグ用
-    private bool _hit;
     float _time;
     
     //ダメージ
@@ -46,7 +45,6 @@ public class Health : MonoBehaviour {
         rt = _healthGauge.GetComponent<RectTransform>();
 
         //デバッグ用
-        _hit = false;//デバッグ用のヒットフラグをFalseにする
         _time = 0f;
 	}
 	
@@ -69,7 +67,9 @@ public class Health : MonoBehaviour {
         float wid = Mathf.Clamp(((float)_displayHealthPoint / (float)_healthMax) * 95.0f, 0f, 95f);
         rt.sizeDelta = new Vector2(wid, 6.0f);
 
+#if true
         //デバッグ用【仮想ダメージ】
+        Debug.Log("仮想ダメージ");
         _time += Time.deltaTime;
         if (_time >= 3.0f)
         {
@@ -77,4 +77,5 @@ public class Health : MonoBehaviour {
             _time = 0f;
         }
 	}
+#endif
 }
