@@ -35,7 +35,6 @@ public class EnemyAI : MonoBehaviour
             //  TODO    :   animation
 
             argBaseEnemy.Attack();
-            argBaseEnemy.LogNumTable.Add(0, Logger.Log("Enemy Attaking : Punch"));
         }
     }
 
@@ -43,7 +42,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (WeaponManager.Instance.ActiveWeapon)
         {
-            MoveToPick();
+            MoveToPick(argBaseEnemy);
         }
         else
         {
@@ -71,8 +70,30 @@ public class EnemyAI : MonoBehaviour
             new Vector3(-argBaseEnemy.Direction.x, transform.localScale.y, transform.localScale.z);
     }
 
-    void MoveToPick()
+    void MoveToPick(BaseEnemy argBaseEnemy)
     {
+        if (!argBaseEnemy.IsMoveToPick())
+            return;
+
+        //  武器の座標取得
+        Transform weaponPos = WeaponManager.Instance.ActiveWeapon.transform;
+
+        //  移動方向の取得
+        targetDir_ = Mathf.Atan2(
+            weaponPos.position.y - transform.position.y,
+            weaponPos.position.x - transform.position.x);
+
+        //  移動座標の取得
+        Vector2 target = transform.position;
+        target.x += argBaseEnemy.Spd.x * Mathf.Cos(targetDir_);
+
+        //  移動
+        transform.position = target;
+
+        //  画像の向きの変更
+        transform.localScale = (weaponPos.position.x < transform.position.x) ?
+            new Vector3(argBaseEnemy.Direction.x, transform.localScale.y, transform.localScale.z) :
+            new Vector3(-argBaseEnemy.Direction.x, transform.localScale.y, transform.localScale.z);
 
     }
 

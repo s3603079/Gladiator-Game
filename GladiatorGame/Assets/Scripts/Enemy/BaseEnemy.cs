@@ -12,13 +12,21 @@ public class BaseEnemy : Character
         power_ = 1f;
         spd_ = new Vector2(0.05f, 5f);
         ai_ = GetComponent<EnemyAI>();
-
+        logRegistKey_[(int)LogNum.Attack] = "Enemy Attaking : ";
     }
 
     void Update ()
     {
         ai_.Execute(this);
         base.Update();
+    }
+
+    public bool IsMoveToPick()
+    {
+        bool res = true;
+        if (equipmentWeaponType_ != WeaponType.Punch)
+            res = false;
+        return res;
     }
     
     void OnCollisionEnter2D(Collision2D collision)

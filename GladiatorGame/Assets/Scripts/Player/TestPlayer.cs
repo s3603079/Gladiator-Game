@@ -10,9 +10,11 @@ public class TestPlayer : Character
     {
         spd_ = new Vector2(5f, 5f);
         base.Start();
+        logRegistKey_[(int)LogNum.Attack] = "Player Attaking : ";
+        logRegistKey_[(int)LogNum.TakeDamage] = "Player TakeDamage : ";
     }
-	
-	void Update ()
+
+    void Update ()
     {
         DebugActions();
         base.Update();
@@ -25,7 +27,7 @@ public class TestPlayer : Character
         {// 被ダメージ状態から1秒たったら普通の状態
             currentInvisibleTime_ = 0f;
             isHitting_ = false;
-            base.RemoveLog(1);
+            Logger.RemoveLog(logRegistKey_[(int)LogNum.TakeDamage]);
         }
 
     }
@@ -42,7 +44,6 @@ public class TestPlayer : Character
             //  TODO    :   animation
 
             Attack();
-            logNum_.Add(2, Logger.Log("Player Attaking : Punch"));
         }
     }
 
@@ -84,11 +85,23 @@ public class TestPlayer : Character
         if (isHitting_)
             return;
 
-        if (collision.tag == "Fist")
-        {
-            string msg = CharacterManager.Instance.Enemy.Power.ToString();
-            logNum_.Add(1, Logger.Log("Enemy punch for Player!! " + msg + " Damage!!"));
-            isHitting_ = true;
+        string msg = null;
+        switch (collision.tag)
+        {// 他のオブジェクトとの当たりを考慮して面倒だけど一個ずつ処理分け
+
+            case "Fist":
+                msg = CharacterManager.Instance.Enemy.Power.ToString();
+                Logger.Log(logRegistKey_[(int)LogNum.TakeDamage], "Enemy Punch for Player!! " + msg + " Damage!!");
+                isHitting_ = true;
+                break;
+            case "Sword":
+                msg = CharacterManager.Instance.Enemy.Power.ToString();
+                Logger.Log(logRegistKey_[(int)LogNum.TakeDamage], "Enemy Sword for Player!! " + msg + " Damage!!");
+                isHitting_ = true;
+                break;
+
+            default:
+                break;
         }
     }
 
