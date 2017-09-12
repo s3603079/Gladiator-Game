@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Sword : Weapon
 {
-    void Start()
-    {
+    protected override void Start() {
         weaponDestroyTime_ = 1f;
         attackedReach_ = 1.0f;
         weakType_ = WeaponType.Bow;
@@ -14,8 +13,7 @@ public class Sword : Weapon
         base.Start();
     }
 
-    void Update()
-    {
+    public override void Attack(float InputValue) {
+        transform.parent.localEulerAngles = (Vector3.MoveTowards(transform.forward * 0F, transform.forward * 90F, InputValue) * 120F);
     }
-
 }

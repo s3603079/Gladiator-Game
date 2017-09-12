@@ -84,21 +84,22 @@ public class Gladiator : MonoBehaviour {
     /// </summary>
     /// <param name="InputValue"></param>
     public void Attack(float InputValue) {
+        var weapon = arm.GetChild((int)haveWeapon);
+
         // 持っている武器に応じてモーションが異なる
         switch (haveWeapon)
         {
             case Weapons.Punch:
-                arm.localPosition = (-transform.up * 0.2F) + (Vector3.MoveTowards(Vector3.zero, transform.up, InputValue) * 1F);
+                weapon.GetComponent<Punch>().Attack(InputValue);
                 break;
             case Weapons.Sword:
-                arm.localEulerAngles = (Vector3.MoveTowards(transform.forward * 0F, transform.forward * 90F, InputValue) * 120F);
+                weapon.GetComponent<Sword>().Attack(InputValue);
                 break;
             case Weapons.Bow:
-                var arrow = arm.GetChild((int)haveWeapon).GetChild(0);
-                arrow.localPosition = (Vector3.MoveTowards(Vector3.zero, -transform.right, InputValue) * 1.25F);
+                weapon.GetComponent<Bow>().Attack(InputValue);
                 break;
             case Weapons.Shield:
-                arm.localPosition = (Vector3.MoveTowards(Vector3.zero, transform.up, InputValue) * 0.5F);
+                weapon.GetComponent<Shield>().Attack(InputValue);
                 break;
             default:
                 break;
@@ -113,11 +114,11 @@ public class Gladiator : MonoBehaviour {
         // 入力軸の横方向で向きを決定
         if(InputAxis.x <= -0.1F)
         {
-            transform.localScale = new Vector3(-1F, transform.localScale.y);
+            transform.localScale = new Vector3(-1F, transform.localScale.y, transform.localScale.z);
         }
         else if(InputAxis.x >= 0.1f)
         {
-            transform.localScale = new Vector3(+1F, transform.localScale.y);
+            transform.localScale = new Vector3(+1F, transform.localScale.y, transform.localScale.z);
         }
 
         // 入力軸の縦方向で角度を修正
