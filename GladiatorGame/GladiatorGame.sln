@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GladiatorGame", "GladiatorGame.csproj", "{34D25764-F0B6-51BB-13F6-B731C2B5F606}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GladiatorGame", "Assembly-CSharp.csproj", "{B05EFB74-BEA3-3542-1874-91062E2F1299}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,12 +9,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{34D25764-F0B6-51BB-13F6-B731C2B5F606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34D25764-F0B6-51BB-13F6-B731C2B5F606}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34D25764-F0B6-51BB-13F6-B731C2B5F606}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34D25764-F0B6-51BB-13F6-B731C2B5F606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B05EFB74-BEA3-3542-1874-91062E2F1299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B05EFB74-BEA3-3542-1874-91062E2F1299}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B05EFB74-BEA3-3542-1874-91062E2F1299}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B05EFB74-BEA3-3542-1874-91062E2F1299}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
