@@ -84,20 +84,22 @@ public class Gladiator : MonoBehaviour {
     /// </summary>
     /// <param name="InputValue"></param>
     public void Attack(float InputValue) {
+        var weapon = arm.GetChild((int)haveWeapon);
+
         // 持っている武器に応じてモーションが異なる
         switch (haveWeapon)
         {
             case Weapons.Punch:
-                arm.localPosition = (Vector3.MoveTowards(Vector3.zero, transform.up, InputValue) * 1F);
+                weapon.GetComponent<Punch>().Attack(InputValue);
                 break;
             case Weapons.Sword:
-                arm.localEulerAngles = (Vector3.MoveTowards(transform.forward * 0F, transform.forward * 90F, InputValue) * 120F);
+                weapon.GetComponent<Sword>().Attack(InputValue);
                 break;
             case Weapons.Bow:
-                arm.GetChild(2).GetComponent<Bow>().Attack(InputValue);
+                weapon.GetComponent<Bow>().Attack(InputValue);
                 break;
             case Weapons.Shield:
-                arm.localPosition = (Vector3.MoveTowards(Vector3.zero, transform.up, InputValue) * 0.5F);
+                weapon.GetComponent<Shield>().Attack(InputValue);
                 break;
             default:
                 break;

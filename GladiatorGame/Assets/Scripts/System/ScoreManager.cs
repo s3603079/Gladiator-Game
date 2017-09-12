@@ -55,8 +55,8 @@ public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
 
     public void AddScore()
     {
-        /*長時間生き残ると、スコアが高い*/
-        _score = (int)_time.GetTime() * 10 + _killCount.GetKillNumber() * 100;
+        ///*長時間生き残ると、スコアが高い*/
+        //_score = (int)_time.GetTime() * 10 + _killCount.GetKillNumber() * 100;
     }
 
     public int GetScore()
