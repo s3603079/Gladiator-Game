@@ -26,7 +26,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 	
 	// Update is called once per frame
 	void Update () {
-        time.text = "Time:" + (Time.time - timer).ToString("f1");
+        time.text = (Time.time - timer).ToString("000");
 
         SettingGladiator(player1, GamePad.Index.One);
         SettingGladiator(player2, GamePad.Index.Two);

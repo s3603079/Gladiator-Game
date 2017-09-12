@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class sceneManger : MonoBehaviour {
-
-    Scene currentScene;    
+public class sceneManger : SingletonMonoBehaviour<sceneManger>
+{
+    Scene currentScene;
     string previousScene;
     public Object thisObject;
     public string titleSceneName;
@@ -13,19 +13,27 @@ public class sceneManger : MonoBehaviour {
     public string multiPlayerSceneName;
     public string gameOverSceneName;
 
-    // Use this for initialization
-    void Start () {
-        Object.DontDestroyOnLoad(thisObject);
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    protected override void Awake() {
+        base.Awake();
+    }
 
+    // Use this for initialization
+    void Start()
+    {
+        //Object.DontDestroyOnLoad(thisObject);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+#if true
         currentScene = SceneManager.GetActiveScene();
 
         //quits
-        if (Input.GetKeyDown(KeyCode.Escape)){
-            Application.Quit(); 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
         }
 
         if (string.Equals(currentScene.name, "title"))
@@ -47,9 +55,10 @@ public class sceneManger : MonoBehaviour {
         {
             gameOverScene();
         }
+#endif
     }
 
-    void titleScene() 
+    void titleScene()
     {
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -82,7 +91,8 @@ public class sceneManger : MonoBehaviour {
         }
     }
 
-    void gameOverScene() {
+    void gameOverScene()
+    {
 
         if (Input.GetKeyDown(KeyCode.R))
         {
