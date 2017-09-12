@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class KillCount : MonoBehaviour {
 
+    private int _now;
+
     [SerializeField]
     private int killNumber = 0;
     [SerializeField]
@@ -15,26 +17,41 @@ public class KillCount : MonoBehaviour {
     [SerializeField]
     private Text killText;
 
-    //デバッグ用
-    private float _time;
+    [SerializeField]
+    private bool isInverted;//ゲージの反転処理
 
     // Use this for initialization
     void Start () {
+        _now = 1;
         slider.maxValue = maxKillCount;
-        slider.value = slider.maxValue;
-
-        //killNumber = maxKillCount;
-        _time = 0;
+        if (isInverted)
+        {
+            slider.value = 100;
+        }
+        else
+        {
+            slider.value = 0;
+        }
     }
 
     // Update is called once per frame
     void Update () {
 
         killNumber = Mathf.Clamp(killNumber, 0, maxKillCount);
+        Debug.Log(isInverted);
         //指定した番号ごとにゲージをリセット
-        slider.value = killNumber%10;
+        if (isInverted)
+        {
+            slider.value = 100 - killNumber;
+        }
+        else
+        {
+            slider.value = killNumber;
+        }
+
         //アイコン上に討伐数を表示
         killText.text = killNumber.ToString();
+
     }
 
     public void AddKillCount()
