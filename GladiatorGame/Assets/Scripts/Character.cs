@@ -77,12 +77,14 @@ public class Character : MonoBehaviour
         direction_ = transform.localScale;
         degree_ = 0f;
 
-        weaponGroupType_[(int)WeaponType.Punch] = transform.GetChild(0).gameObject.GetComponent<Weapon>();
-        weaponGroupType_[(int)WeaponType.Sword] = transform.GetChild(1).gameObject.GetComponent<Weapon>();
+        Transform arm = transform.GetChild(0).transform.GetChild(0);
+
+        weaponGroupType_[(int)WeaponType.Punch] = arm.GetChild(0).gameObject.GetComponent<Weapon>();
+        weaponGroupType_[(int)WeaponType.Sword] = arm.GetChild(1).gameObject.GetComponent<Weapon>();
 
         //  TODO    :   未実装
-        //weaponGroup_[(int)WeaponType.Shield] = transform.GetChild(2).gameObject;
-        //weaponGroup_[(int)WeaponType.Bow] = transform.GetChild(3).gameObject;
+        //weaponGroup_[(int)WeaponType.Shield] = arm.GetChild(2).gameObject;
+        //weaponGroup_[(int)WeaponType.Bow] = arm.GetChild(3).gameObject;
 
         equipmentWeapon_ = weaponGroupType_[(int)WeaponType.Punch].GetComponent<Weapon>();
 
