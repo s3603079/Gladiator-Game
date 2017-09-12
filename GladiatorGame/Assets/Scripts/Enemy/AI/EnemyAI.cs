@@ -43,7 +43,7 @@ public class EnemyAI : MonoBehaviour
         if (argBaseEnemy.IsAttacking)
             return;
 
-        if (WeaponManager.Instance.ActiveWeapon && argBaseEnemy.IsMoveToPick())
+        if (WeaponManager.Instance.ActiveWeapons[0] && argBaseEnemy.IsMoveToPick())
         {
             MoveToPick(argBaseEnemy);
         }
@@ -79,7 +79,7 @@ public class EnemyAI : MonoBehaviour
     void MoveToPick(BaseEnemy argBaseEnemy)
     {
         //  武器の座標取得
-        Transform weaponPos = WeaponManager.Instance.ActiveWeapon.transform;
+        Transform weaponPos = WeaponManager.Instance.ActiveWeapons[0].transform;
 
         //  移動方向の取得
         targetDir_ = Mathf.Atan2(

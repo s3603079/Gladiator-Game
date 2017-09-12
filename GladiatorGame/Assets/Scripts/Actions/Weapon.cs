@@ -51,7 +51,7 @@ public class Weapon : MonoBehaviour
             }
             else
             {// 地面に落ちたらマネージャーに登録
-                WeaponManager.Instance.ActiveWeapon = this;
+                WeaponManager.Instance.ActiveWeapons[0] = this;
             }
         }
 	}
