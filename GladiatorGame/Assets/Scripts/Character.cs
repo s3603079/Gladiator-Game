@@ -155,6 +155,12 @@ public class Character : MonoBehaviour
         Logger.Log(logRegistKey_[(int)LogNum.Attack], logRegistKey_[(int)LogNum.Attack] + weaponTypeName);
     }
 
+    public void Damage(int argDamage, int argLifeMax)
+    {
+        life_ -= argDamage;
+        life_ = Mathf.Clamp(life_, 0, argLifeMax);
+    }
+
     public void ChangeWeapon(int argWeaponTypeIndex)
     {
         //  現在の武器をシャットダウン
