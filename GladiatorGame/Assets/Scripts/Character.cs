@@ -44,10 +44,6 @@ public class Character : MonoBehaviour
     {
         get { return equipmentWeapon_; }
     }
-    public WeaponType EquipmentWeaponType
-    {
-        get { return equipmentWeapon_.ThisWeaponType; }
-    }
     public float Power
     {
         get { return power_; }
@@ -105,8 +101,9 @@ public class Character : MonoBehaviour
         if(life_ <= 0)
         {// 死亡処理
             isLiving_ = false;
+            gameObject.SetActive(false);
         }
-
+        
         pos_ = transform.position;
         if (isAttacking_)
         {
@@ -130,10 +127,19 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void Initialize(int argWeaponTypeIndex, int argLife, Vector2 argEntryPos)
+    {
+        isLiving_ = true;
+        gameObject.SetActive(true);
+        life_ = argLife;
+        ChangeWeapon(argWeaponTypeIndex);
+        transform.position = argEntryPos;
+    }
+
     protected virtual void ChoiceWeapon(WeaponType argWeaponType = WeaponType.Max, GameObject argGameObject = null)
     {
         ChangeWeapon((int)argWeaponType);
-        WeaponManager.Instance.RemoveActiveWeapon(argGameObject);
+        WeaponManager.Instance.RemoveActiveWeapon(argGameObject, 0);
     }
 
     public virtual void Attack()
@@ -173,9 +179,11 @@ public class Character : MonoBehaviour
             return;
 
         string msg = null;
-
         msg = CharacterManager.Instance.Enemy.Power.ToString();
         Logger.Log(logRegistKey_[(int)LogNum.TakeDamage], argCollision.tag + " : " + logRegistKey_[(int)LogNum.TakeDamage] + msg + " Damage!!");
+
         isHitting_ = true;
+
+        life_--;
     }
 }

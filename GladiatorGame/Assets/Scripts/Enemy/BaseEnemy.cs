@@ -45,14 +45,14 @@ public class BaseEnemy : Character
         if (equipmentWeapon_.ThisWeaponType != WeaponType.Punch)
             res = false;
         TestPlayer player = CharacterManager.Instance.PlayerList[0];
-        WeaponType playerWeaponType = player.EquipmentWeaponType;
+        WeaponType playerWeaponType = player.EquipmentWeapon.ThisWeaponType;
 
         //  TODO    :   未実装
         //if(playerWeaponType == equipmentWeapon_.WeakWeaponType)
 
         //  プレイヤーの弱点以外か、自分と同じ武器タイプなら拾いに行かない
-        if (WeaponManager.Instance.ActiveWeapon.StrengthWeaponType != playerWeaponType ||
-            WeaponManager.Instance.ActiveWeapon.ThisWeaponType == equipmentWeapon_.ThisWeaponType)
+        if (WeaponManager.Instance.ActiveWeapons[0].StrengthWeaponType != playerWeaponType ||
+            WeaponManager.Instance.ActiveWeapons[0].ThisWeaponType == equipmentWeapon_.ThisWeaponType)
             res = false;
 
         return res;
@@ -63,12 +63,12 @@ public class BaseEnemy : Character
     protected override void ChoiceWeapon(WeaponType argWeaponType = WeaponType.Max, GameObject argGameObject = null)
     {
         TestPlayer player = CharacterManager.Instance.PlayerList[0];
-        WeaponType playerWeaponType = player.EquipmentWeaponType;
+        WeaponType playerWeaponType = player.EquipmentWeapon.ThisWeaponType;
 
         //  TODO    :   まだ未実装
         //if(playerWeaponType == equipmentWeapon_.WeakWeaponType)
-        if (WeaponManager.Instance.ActiveWeapon.StrengthWeaponType == playerWeaponType &&
-            WeaponManager.Instance.ActiveWeapon.ThisWeaponType != equipmentWeapon_.ThisWeaponType)
+        if (WeaponManager.Instance.ActiveWeapons[0].StrengthWeaponType == playerWeaponType &&
+            WeaponManager.Instance.ActiveWeapons[0].ThisWeaponType != equipmentWeapon_.ThisWeaponType)
         {
             base.ChoiceWeapon(argWeaponType, argGameObject);
         }

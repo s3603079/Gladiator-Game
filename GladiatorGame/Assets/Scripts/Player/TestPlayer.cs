@@ -9,6 +9,7 @@ public class TestPlayer : Character
     void Start ()
     {
         spd_ = new Vector2(5f, 5f);
+        life_ = 1000;
         base.Start();
         logRegistKey_[(int)LogNum.Attack] = "Player Attaking : ";
         logRegistKey_[(int)LogNum.TakeDamage] = "Enemy Attack for Player!! ";
