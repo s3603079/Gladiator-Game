@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using GamepadInput;
 
 public class sceneManger : MonoBehaviour {
 
@@ -23,7 +24,8 @@ public class sceneManger : MonoBehaviour {
         currentScene = SceneManager.GetActiveScene();
 
         //quits
-        if (Input.GetKeyDown(KeyCode.Escape)){
+        if (GamePad.GetButtonDown(GamePad.Button.Back, GamePad.Index.One))
+        {
             Application.Quit(); 
         }
 
@@ -50,14 +52,15 @@ public class sceneManger : MonoBehaviour {
 
     void titleScene() 
     {
+        string selection = ContentsManager.getSelection().name;
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (string.Equals(selection,"play") && GamePad.GetButtonDown(GamePad.Button.A,GamePad.Index.One))
         {
             SceneManager.LoadScene(singlePlayerSceneName);
         }
-        else if (Input.GetKeyDown(KeyCode.M))
+        else if (string.Equals(selection, "quit") && GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.One))
         {
-            SceneManager.LoadScene(multiPlayerSceneName);
+            Application.Quit();
         }
     }
 
