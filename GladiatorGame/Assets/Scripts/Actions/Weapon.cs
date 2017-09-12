@@ -29,13 +29,13 @@ public class Weapon : MonoBehaviour
     }
 
 
-    protected void Start ()
+    protected virtual void Start ()
     {
         currentDestroyTime_ = weaponDestroyTime_;
         rigid2D_ = GetComponent<Rigidbody2D>();
     }
 
-    protected void Update ()
+    protected virtual void Update ()
     {
         if(--currentDestroyTime_ < 0)
         {
@@ -43,8 +43,11 @@ public class Weapon : MonoBehaviour
             gameObject.SetActive(false);
         }
 	}
+    public virtual void Attack(float InputValue)
+    {
+    }
 
-    void OnTriggerEnter2D(Collider2D collision)
+        void OnTriggerEnter2D(Collider2D collision)
     {
         //  装備されていたら判定なし
         if (gameObject.transform.parent)
