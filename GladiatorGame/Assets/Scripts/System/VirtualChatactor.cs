@@ -15,7 +15,7 @@ public class VirtualChatactor : MonoBehaviour {
     [SerializeField]
     private KillCount _killCount;
 
-    private int weaponType;
+    private int _weaponType;
 
     // Use this for initialization
     void Start () {
@@ -31,7 +31,7 @@ public class VirtualChatactor : MonoBehaviour {
 
         if(Time.time%10==0)
         {
-            weaponType++;
+            _weaponType++;
         }
     }
 
@@ -63,6 +63,6 @@ public class VirtualChatactor : MonoBehaviour {
 
     public int WeaponType()
     {
-        
+        return _weaponType;
     }
 }

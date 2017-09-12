@@ -1,62 +1,43 @@
 ﻿using UnityEngine;
 
-public class BaseEnemy : Charctor
+public class BaseEnemy : Character
 {
-    int level_ = 0;
+    int level_ = 0;             //  !<  現在のレベル
+    EnemyAI ai_;                //  !<  AIの挙動
 
     void Start ()
     {
         base.Start();
         life_ = 1;
         power_ = 1f;
-        spd_ = new Vector2(5f, 5f);
+        spd_ = new Vector2(0.05f, 5f);
+        ai_ = GetComponent<EnemyAI>();
+        logRegistKey_[(int)LogNum.Attack] = "Enemy Attaking : ";
     }
-	
-	void Update ()
+
+    void Update ()
     {
-        DebugActions();
+        ai_.Execute(this);
         base.Update();
     }
-
-    void FixedUpdate()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public bool IsMoveToPick()
     {
-        DebugMove();
+        bool res = true;
+        if (equipmentWeaponType_ != WeaponType.Punch)
+            res = false;
+        return res;
     }
-    void DebugActions()
+    
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (isAttacking_)
-        //    return;
-
-        if (Input.GetKeyDown(KeyCode.Z))
+        if(collision.gameObject.tag == "Ground")
         {
-            //Punch();
-        }
-    }
-
-    void DebugMove()
-    {
-        if (isAttacking_)
-            return;
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            rigid2d_.velocity = new Vector2(rigid2d_.velocity.x, spd_.y);
-        }
-
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            rigid2d_.velocity -= new Vector2(0f, -0.1f);
-        }
-
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            rigid2d_.velocity = new Vector2(spd_.x, rigid2d_.velocity.y);
-            transform.localScale = new Vector3(-direction_.x, transform.localScale.y, transform.localScale.z);
-        }
-
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            rigid2d_.velocity = new Vector2(-spd_.x, rigid2d_.velocity.y);
-            transform.localScale = new Vector3(direction_.x, transform.localScale.y, transform.localScale.z);
+            isJumping_ = false;
         }
     }
+
 }
