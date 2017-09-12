@@ -76,6 +76,7 @@
      <Compile Include="Assets\Scripts\System\SelectIcon.cs" />
      <Compile Include="Assets\Scripts\System\VirtualChatactor.cs" />
      <Compile Include="Assets\Scripts\Title\ConnectCheck.cs" />
+     <Compile Include="Assets\Scripts\Title\ContentsManager.cs" />
      <Compile Include="Assets\Scripts\Utility\Logger.cs" />
      <Compile Include="Assets\Scripts\Utility\SingletonMonoBehaviour.cs" />
      <Compile Include="Assets\Scripts\WeaponManager.cs" />

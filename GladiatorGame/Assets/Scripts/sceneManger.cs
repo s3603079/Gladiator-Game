@@ -2,80 +2,92 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using GamepadInput;
 
-public class sceneManger : SingletonMonoBehaviour<sceneManger>
-{
-    Scene currentScene;
+public class sceneManger : MonoBehaviour {
+
+    Scene currentScene;    
     string previousScene;
-    public Object thisObject;
     public string titleSceneName;
+    public string connectSceneName;
     public string singlePlayerSceneName;
     public string multiPlayerSceneName;
     public string gameOverSceneName;
 
-    protected override void Awake() {
-        base.Awake();
-    }
-
     // Use this for initialization
-    void Start()
-    {
-        //Object.DontDestroyOnLoad(thisObject);
-    }
+    void Start () {
+        Object.DontDestroyOnLoad(gameObject);
+	}
+	
+	// Update is called once per frame
+	void Update () {
 
-    // Update is called once per frame
-    void Update()
-    {
-
-#if true
         currentScene = SceneManager.GetActiveScene();
 
         //quits
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (GamePad.GetButtonDown(GamePad.Button.Back, GamePad.Index.One))
         {
-            Application.Quit();
+            Application.Quit(); 
         }
 
-        if (string.Equals(currentScene.name, "title"))
+        if (string.Equals(currentScene.name, titleSceneName))
         {
             titleScene();
         }
 
-        else if (string.Equals(currentScene.name, "arenaSingle"))
+        else if (string.Equals(currentScene.name, connectSceneName))
+        {
+            connectScene();
+        }
+
+        else if (string.Equals(currentScene.name, singlePlayerSceneName))
         {
             singleScene();
         }
 
-        else if (string.Equals(currentScene.name, "arenaMulti"))
+        else if (string.Equals(currentScene.name, multiPlayerSceneName))
         {
             mulltiScene();
         }
 
-        else if (string.Equals(currentScene.name, "gameOver"))
+        else if (string.Equals(currentScene.name, gameOverSceneName))
         {
             gameOverScene();
         }
-#endif
     }
 
-    void titleScene()
+    void titleScene() 
     {
+        string selection = ContentsManager.getSelection().name;
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (string.Equals(selection,"play") && GamePad.GetButtonDown(GamePad.Button.A,GamePad.Index.One))
         {
+            SceneManager.LoadScene(connectSceneName);
+        }
+        else if (string.Equals(selection, "quit") && GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.One))
+        {
+            Application.Quit();
+        }
+    }
+
+    void connectScene() {
+
+        if (GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.One)) {
+
             SceneManager.LoadScene(singlePlayerSceneName);
         }
-        else if (Input.GetKeyDown(KeyCode.M))
-        {
+        else if(GamePad.GetButtonDown(GamePad.Button.B, GamePad.Index.One)){
+
             SceneManager.LoadScene(multiPlayerSceneName);
         }
+
     }
 
     void singleScene()
     {
         previousScene = singlePlayerSceneName;
 
-        if (Input.GetKeyDown(KeyCode.M))//player is dead
+        if (GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.One))//player is dead
         {
             SceneManager.LoadScene(gameOverSceneName);
         }
@@ -85,20 +97,19 @@ public class sceneManger : SingletonMonoBehaviour<sceneManger>
     {
         previousScene = multiPlayerSceneName;
 
-        if (Input.GetKeyDown(KeyCode.M))//player wins
+        if (GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.One))//player wins
         {
             SceneManager.LoadScene(gameOverSceneName);
         }
     }
 
-    void gameOverScene()
-    {
+    void gameOverScene() {
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.One))
         {
             SceneManager.LoadScene(previousScene);
         }
-        else if (Input.GetKeyDown(KeyCode.T))
+        else if (GamePad.GetButtonDown(GamePad.Button.B, GamePad.Index.One))
         {
             SceneManager.LoadScene(titleSceneName);
         }
