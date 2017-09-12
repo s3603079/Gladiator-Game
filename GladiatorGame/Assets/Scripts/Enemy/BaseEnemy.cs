@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BaseEnemy : Charcter
+public class BaseEnemy : Charctor
 {
     int level_ = 0;
 
@@ -24,8 +24,8 @@ public class BaseEnemy : Charcter
     }
     void DebugActions()
     {
-        if (isAttacking_)
-            return;
+        //if (isAttacking_)
+        //    return;
 
         if (Input.GetKeyDown(KeyCode.Z))
         {

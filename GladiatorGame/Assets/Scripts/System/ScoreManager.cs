@@ -47,11 +47,25 @@ public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
         Debug.Log("スコアの加算");
         if (!_chara.IsLiving())//敵が死んだら
         {
-            _killCount.AddKillCount();//キルカウント＋１
             AddScore();//スコアを入手
         }
         //-------------------------------------------------------------
 #endif
+    }
+
+    public void AddScore()
+    {
+        /*長時間生き残ると、スコアが高い*/
+        _score = (int)_time.GetTime() * 10 + _killCount.GetKillNumber() * 100;
+    }
+
+    public int GetScore()
+    {
+        return _score;
+    }
+
+    public void DrawScore()
+    {
         //スコアの表示
         if (_displayScore != _score)
         {
@@ -59,19 +73,5 @@ public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
         }
 
         _scoreText.text = string.Format("{0:00000000}", _displayScore);
-    }
-
-    public void AddScore()
-    {
-        /*Pattern 1 短時間でクリアするとスコアが高い*/
-        //_score = (600 - (int)_time.GetTime()) * 10 + _killCount.GetKillNumber() * 100;//仮に10分より早いと＋
-
-        /*Pattern 2 長時間生き残ると、スコアが高い*/
-        _score = (int)_time.GetTime() * 10 + _killCount.GetKillNumber() * 100;
-    }
-
-    public int GetScore()
-    {
-        return _score;
     }
 }
