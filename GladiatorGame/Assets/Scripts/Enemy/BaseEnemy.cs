@@ -9,7 +9,7 @@ public class BaseEnemy : Character
     void Start()
     {
         base.Start();
-        life_ = 1;
+        life_ = 100;
         power_ = 1f;
         spd_ = new Vector2(0.05f, 5f);
         ai_ = GetComponent<EnemyAI>();
@@ -19,6 +19,11 @@ public class BaseEnemy : Character
 
     void Update()
     {
+        if(!isLiving_)
+        {
+            gameObject.SetActive(false);
+        }
+
         ai_.Execute(this);
         base.Update();
     }
@@ -34,7 +39,7 @@ public class BaseEnemy : Character
     void OnTriggerStay2D(Collider2D collision)
     {
         Weapon weapon = collision.gameObject.GetComponent<Weapon>();
-        TriggerStay2D(weapon, collision);
+        TriggerStay2D(weapon, collision, (int)CharacterManager.Instance.PlayerList[0].Power);
     }
 #endregion UnityDefault
 

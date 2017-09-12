@@ -10,13 +10,17 @@ public class TestPlayer : Character
     {
         spd_ = new Vector2(5f, 5f);
         life_ = 1000;
+        power_ = 10;
         base.Start();
         logRegistKey_[(int)LogNum.Attack] = "Player Attaking : ";
         logRegistKey_[(int)LogNum.TakeDamage] = "Enemy Attack for Player!! ";
     }
 
-    void Update ()
+    void Update()
     {
+        if (!isLiving_)
+        {// TODO    :   死亡処理
+        }
         DebugActions();
         base.Update();
     }
@@ -50,7 +54,6 @@ public class TestPlayer : Character
         {
             Attack();
         }
-
 
         if (!canPick_)
             ChoiceWeapon();
@@ -95,7 +98,7 @@ public class TestPlayer : Character
         if(weapon)
             canPick_ = true;
 
-        TriggerStay2D(weapon, collision);
+        TriggerStay2D(weapon, collision, (int)CharacterManager.Instance.Enemy.Power);
     }
 
     void OnCollisionEnter2D(Collision2D collision)

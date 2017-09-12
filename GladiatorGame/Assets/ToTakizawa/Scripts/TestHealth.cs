@@ -3,37 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TeatHealth : MonoBehaviour
+public class TestHealth : MonoBehaviour
 {
     [SerializeField]
     Character character_;
     [SerializeField]
     Image healthGauge_; //  !<  体力を表示している
-
-    //体力ゲージ
-    int healthPoint_;
+    
     //マックスの体力(スタート時のキャラクターの体力)
     int healthMax_;
 
     RectTransform rt_;
 
     //動きをつけた表示用
-    private int displayHealthPoint_;
-    
-    float time_;    //  !<  デバッグ用
+    int displayHealthPoint_;
 
     void Start()
     {
-        //--------------------------------------------
-        //※ここを変更してプレイヤーのステータスをもらう
-        //体力
+        Debug.Assert(character_, "Found Character Failed...");
+        Debug.Assert(healthGauge_, "Found HealthGauge Image Failed...");
         healthMax_ = character_.Life;
-        //--------------------------------------------
-        displayHealthPoint_ = healthMax_;//体力を最大値にする
+        displayHealthPoint_ = healthMax_;// 体力を最大値にする
 
         rt_ = healthGauge_.GetComponent<RectTransform>();
 
-        time_ = 0f;
     }
 
     void Update()
@@ -50,15 +43,5 @@ public class TeatHealth : MonoBehaviour
         float wid = Mathf.Clamp((displayHealthPoint_ / (float)healthMax_) * 95.0f, 0f, 95f);
         rt_.sizeDelta = new Vector2(wid, 6.0f);
 
-#if false
-        //デバッグ用【仮想ダメージ】
-        Debug.Log("仮想ダメージ");
-        time_ += Time.deltaTime;
-        if (time_ >= 3.0f)
-        {
-            chara_.Damage(1, 100);
-            time_ = 0f;
-        }
-#endif
     }
 }

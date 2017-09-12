@@ -12,22 +12,23 @@ enum LogNum
 public class Character : MonoBehaviour
 {
     protected Weapon equipmentWeapon_;                  //  !<  装備している武器
-    protected bool isLiving_;                           //  !<  生死判定フラグ
-    protected bool isAttacking_ = false;                //  !<  攻撃中フラグ
-    protected bool isHitting_ = false;                  //  !<  攻撃を受けたフラグ
     protected Rigidbody2D rigid2d_;                     //  !<  剛体
     protected Vector2 pos_;                             //  !<  座標
     protected Vector2 spd_;                             //  !<  移動速度
     protected Vector2 direction_;                       //  !<  画像の向き
-    protected float degree_;                            //  !<  角度
     protected float power_;                             //  !<  攻撃力
     protected int life_;                                //  !<  耐久値
+    protected bool isLiving_ = true;                    //  !<  生死判定フラグ
+    protected bool isAttacking_ = false;                //  !<  攻撃中フラグ
+    protected bool isHitting_ = false;                  //  !<  被ダメージフラグ
     protected bool isJumping_ = false;                  //  !<  ジャンプ中フラグ
-    protected float currentInvisibleTime_ = 0f;         //  !<  被ダメージフラグ
     protected object[] logRegistKey_ = new object[(int)WeaponType.Max];
 
     const float AttackFinishFrame_ = 60;                //  !<  攻撃終了時間
     float currentAttackFrame_ = AttackFinishFrame_;     //  !<  現在の攻撃時間
+
+    float currentInvisibleTime_ = 0f;                   //  !<  被ダメージ時間
+    float degree_;                                      //  !<  角度
 
     Weapon[] weaponGroupType_ = new Weapon[(int)WeaponType.Max];      //  !<  所持している武器の種類の一覧
 
@@ -100,12 +101,6 @@ public class Character : MonoBehaviour
     }
     protected void Update()
     {
-        if(life_ <= 0)
-        {// 死亡処理
-            isLiving_ = false;
-            gameObject.SetActive(false);
-        }
-        
         pos_ = transform.position;
         if (isAttacking_)
         {
@@ -155,12 +150,6 @@ public class Character : MonoBehaviour
         Logger.Log(logRegistKey_[(int)LogNum.Attack], logRegistKey_[(int)LogNum.Attack] + weaponTypeName);
     }
 
-    public void Damage(int argDamage, int argLifeMax)
-    {
-        life_ -= argDamage;
-        life_ = Mathf.Clamp(life_, 0, argLifeMax);
-    }
-
     public void ChangeWeapon(int argWeaponTypeIndex)
     {
         //  現在の武器をシャットダウン
@@ -172,7 +161,7 @@ public class Character : MonoBehaviour
 
     }
 
-    protected void TriggerStay2D(Weapon argWeapon, Collider2D argCollision)
+    protected void TriggerStay2D(Weapon argWeapon, Collider2D argCollision, int argDamage)
     {
         if (argWeapon && !argCollision.gameObject.transform.parent)
         {// 落ちている武器に触れていれば
@@ -186,12 +175,15 @@ public class Character : MonoBehaviour
         if (!argCollision.gameObject.transform.parent)
             return;
 
-        string msg = null;
-        msg = CharacterManager.Instance.Enemy.Power.ToString();
-        Logger.Log(logRegistKey_[(int)LogNum.TakeDamage], argCollision.tag + " : " + logRegistKey_[(int)LogNum.TakeDamage] + msg + " Damage!!");
+        Logger.Log(logRegistKey_[(int)LogNum.TakeDamage], argCollision.tag + " : " + logRegistKey_[(int)LogNum.TakeDamage] + argDamage.ToString() + " Damage!!");
 
         isHitting_ = true;
+        life_ -= argDamage;
 
-        life_--;
+        if (life_ <= 0)
+        {// 死亡処理
+            life_ = 0;
+            isLiving_ = false;
+        }
     }
 }
