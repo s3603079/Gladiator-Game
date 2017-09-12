@@ -53,27 +53,57 @@
   <ItemGroup>
      <Compile Include="Assets\GamePadInput\Demo\DemoScript.cs" />
      <Compile Include="Assets\GamePadInput\GamePad.cs" />
+<<<<<<< HEAD
      <Compile Include="Assets\Scripts\Actions\Punch\Punch.cs" />
      <Compile Include="Assets\Scripts\Actions\Punch\Weapon.cs" />
      <Compile Include="Assets\Scripts\bobbing.cs" />
      <Compile Include="Assets\Scripts\Charcter.cs" />
      <Compile Include="Assets\Scripts\Enemy\BaseEnemy.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyManager.cs" />
+=======
+     <Compile Include="Assets\Scripts\Actions\Bow.cs" />
+     <Compile Include="Assets\Scripts\Actions\Punch\Punch.cs" />
+     <Compile Include="Assets\Scripts\Actions\Sword\Sword.cs" />
+     <Compile Include="Assets\Scripts\Actions\Weapon.cs" />
+     <Compile Include="Assets\Scripts\bobbing.cs" />
+     <Compile Include="Assets\Scripts\Character.cs" />
+     <Compile Include="Assets\Scripts\CharacterManager.cs" />
+     <Compile Include="Assets\Scripts\Enemy\AI\EnemyAI.cs" />
+     <Compile Include="Assets\Scripts\Enemy\BaseEnemy.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyInfoManager.cs" />
+>>>>>>> develop
      <Compile Include="Assets\Scripts\Gladiator.cs" />
      <Compile Include="Assets\Scripts\Player\FocusPoint.cs" />
      <Compile Include="Assets\Scripts\Player\Move.cs" />
      <Compile Include="Assets\Scripts\Player\TestPlayer.cs" />
      <Compile Include="Assets\Scripts\sceneManger.cs" />
+<<<<<<< HEAD
      <Compile Include="Assets\Scripts\SimpleMovement.cs" />
+=======
+>>>>>>> develop
      <Compile Include="Assets\Scripts\SoundManager.cs" />
      <Compile Include="Assets\Scripts\System\GameManager.cs" />
      <Compile Include="Assets\Scripts\System\Health.cs" />
      <Compile Include="Assets\Scripts\System\KillCount.cs" />
+<<<<<<< HEAD
      <Compile Include="Assets\Scripts\System\Score.cs" />
      <Compile Include="Assets\Scripts\System\VirtualChatactor.cs" />
      <Compile Include="Assets\Scripts\Title\ContentsManager.cs" />
      <Compile Include="Assets\Scripts\Utility\Logger.cs" />
      <Compile Include="Assets\Scripts\Utility\SingletonMonoBehaviour.cs" />
+=======
+     <Compile Include="Assets\Scripts\System\ScoreManager.cs" />
+     <Compile Include="Assets\Scripts\System\SelectIcon.cs" />
+     <Compile Include="Assets\Scripts\System\VirtualChatactor.cs" />
+     <Compile Include="Assets\Scripts\Title\ConnectCheck.cs" />
+     <Compile Include="Assets\Scripts\Title\ContentsManager.cs" />
+     <Compile Include="Assets\Scripts\Utility\Logger.cs" />
+     <Compile Include="Assets\Scripts\Utility\SingletonMonoBehaviour.cs" />
+     <Compile Include="Assets\Scripts\WeaponManager.cs" />
+     <Compile Include="Assets\Trash\EnemyAIRule.cs" />
+     <Compile Include="Assets\Trash\ProcessAction.cs" />
+     <Compile Include="Assets\Trash\WorkingMemory.cs" />
+>>>>>>> develop
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
