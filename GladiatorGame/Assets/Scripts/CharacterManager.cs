@@ -5,7 +5,11 @@ using UnityEngine.SceneManagement;
 public class CharacterManager : SingletonMonoBehaviour<CharacterManager>
 {
     List<TestPlayer> playerList_ = new List<TestPlayer>();
+
     BaseEnemy enemy_;
+    Vector2 entryPos = new Vector2(10, 0);
+    const float ReEntryTime_ = 1.0f;
+    float currentEntryTime_ = 0.0f;
 
     public BaseEnemy Enemy
     {
@@ -20,15 +24,15 @@ public class CharacterManager : SingletonMonoBehaviour<CharacterManager>
     override protected void Awake()
     {
         base.Awake();
-        //if(SceneManager.GetActiveScene().name == "Play")
-        //{//   プレイシーンに入ったらオブジェクト格納
-        //}
-        //  HACK    :   デバックシーンの為、仮の処理
-
     }
 
     void Start()
     {
+        //if(SceneManager.GetActiveScene().name == "Play")
+        //{//   プレイシーンに入ったらオブジェクト格納
+        //}
+
+        //  HACK    :   デバックシーンの為、仮の処理
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         foreach (var player in players)
@@ -40,5 +44,27 @@ public class CharacterManager : SingletonMonoBehaviour<CharacterManager>
 	
 	void Update ()
     {
-	}
+        if(!enemy_.gameObject.activeSelf)
+        {
+            if(currentEntryTime_ <= 0.0f)
+            {// 敵が死んだ瞬間のみスコア計算
+                TestScoreManager.Instance.AddScore();
+            }
+
+            currentEntryTime_ += Time.deltaTime;
+            if(currentEntryTime_ > ReEntryTime_)
+            {
+                currentEntryTime_ = 0;
+                EntryEnemy();
+            }
+        }
+    }
+
+    void EntryEnemy()
+    {
+        Vector2 pos = (playerList_[0].gameObject.transform.position.x < 0) ? entryPos : -entryPos;
+        //  HACK    :   プレイヤーの弱点タイプ
+        //playerList_[0].EquipmentWeapon.WeakWeaponType
+        enemy_.Initialize((int)WeaponType.Sword, 1, pos);
+    }
 }
