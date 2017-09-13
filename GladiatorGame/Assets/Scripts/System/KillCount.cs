@@ -38,7 +38,6 @@ public class KillCount : MonoBehaviour {
     void Update () {
 
         killNumber = Mathf.Clamp(killNumber, 0, maxKillCount);
-        Debug.Log(isInverted);
         //指定した番号ごとにゲージをリセット
         if (isInverted)
         {

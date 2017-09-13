@@ -22,9 +22,7 @@ public class EnemyAI : MonoBehaviour
             return;
 
         Move(argBaseEnemy);
-        Jump(argBaseEnemy);
         Attack(argBaseEnemy);
-
     }
 
     void Attack(BaseEnemy argBaseEnemy)
@@ -38,9 +36,14 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+#region Move
     void Move(BaseEnemy argBaseEnemy)
     {
-        if (WeaponManager.Instance.ActiveWeapon)
+        //  攻撃中は移動しない
+        if (argBaseEnemy.IsAttacking)
+            return;
+
+        if (WeaponManager.Instance.ActiveWeapons[0] && argBaseEnemy.IsMoveToPick())
         {
             MoveToPick(argBaseEnemy);
         }
@@ -48,6 +51,9 @@ public class EnemyAI : MonoBehaviour
         {
             MoveToAttack(argBaseEnemy);
         }
+
+        Jump(argBaseEnemy);
+
     }
 
     void MoveToAttack(BaseEnemy argBaseEnemy)
@@ -72,11 +78,8 @@ public class EnemyAI : MonoBehaviour
 
     void MoveToPick(BaseEnemy argBaseEnemy)
     {
-        if (!argBaseEnemy.IsMoveToPick())
-            return;
-
         //  武器の座標取得
-        Transform weaponPos = WeaponManager.Instance.ActiveWeapon.transform;
+        Transform weaponPos = WeaponManager.Instance.ActiveWeapons[0].transform;
 
         //  移動方向の取得
         targetDir_ = Mathf.Atan2(
@@ -106,4 +109,5 @@ public class EnemyAI : MonoBehaviour
         argBaseEnemy.IsJumping = true;
         argBaseEnemy.RigitBody2D.velocity = new Vector2(argBaseEnemy.RigitBody2D.velocity.x, argBaseEnemy.Spd.y);
     }
+#endregion Move
 }

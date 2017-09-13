@@ -1,7 +1,19 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<< HEAD
 guid: ccc4ec33d34c3c442a8bc2a6f2e2262b
 timeCreated: 1505190686
 licenseType: Free
+=======
+guid: dc0bbfeae974b594aa0e816a51468971
+timeCreated: 1505190677
+licenseType: Pro
+>>>>>>> feature/Player
+=======
+guid: 39a594f4855564c4fb4af17b03f0418f
+timeCreated: 1505190204
+licenseType: Pro
+>>>>>>> feature/Enemy
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 4
@@ -12,8 +24,14 @@ TextureImporter:
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
+<<<<<<< HEAD
+<<<<<<< HEAD
     mipMapsPreserveCoverage: 0
     alphaTestReferenceValue: 0.5
+=======
+>>>>>>> feature/Player
+=======
+>>>>>>> feature/Enemy
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -29,6 +47,8 @@ TextureImporter:
   textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
+<<<<<<< HEAD
+<<<<<<< HEAD
     serializedVersion: 2
     filterMode: -1
     aniso: -1
@@ -36,6 +56,17 @@ TextureImporter:
     wrapU: 1
     wrapV: 1
     wrapW: 1
+=======
+=======
+>>>>>>> feature/Enemy
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+<<<<<<< HEAD
+>>>>>>> feature/Player
+=======
+>>>>>>> feature/Enemy
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -67,7 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites: []
     outline: []
+<<<<<<< HEAD
+<<<<<<< HEAD
     physicsShape: []
+=======
+>>>>>>> feature/Player
+=======
+>>>>>>> feature/Enemy
   spritePackingTag: 
   userData: 
   assetBundleName: 
