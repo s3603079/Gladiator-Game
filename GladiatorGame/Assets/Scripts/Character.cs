@@ -9,30 +9,28 @@ enum LogNum
     Max,
 }
 
-
 public class Character : MonoBehaviour
 {
     protected Weapon equipmentWeapon_;                  //  !<  装備している武器
-    protected GameObject []weaponGroup_ = new GameObject[(int)WeaponType.Max];  //  !<  所持している武器の一覧
-    protected Weapon []weaponGroupType_ = new Weapon[(int)WeaponType.Max];      //  !<  所持している武器の種類の一覧
-    protected WeaponType equipmentWeaponType_;          //  !<  装備している武器の種類
-
-    protected bool isLiving_;                           //  !<  生死判定フラグ
-    protected bool isAttacking_ = false;                //  !<  攻撃中フラグ
-    protected bool isHitting_ = false;                  //  !<  攻撃を受けたフラグ
     protected Rigidbody2D rigid2d_;                     //  !<  剛体
     protected Vector2 pos_;                             //  !<  座標
     protected Vector2 spd_;                             //  !<  移動速度
     protected Vector2 direction_;                       //  !<  画像の向き
-    protected float degree_;                            //  !<  角度
     protected float power_;                             //  !<  攻撃力
     protected int life_;                                //  !<  耐久値
+    protected bool isLiving_ = true;                    //  !<  生死判定フラグ
+    protected bool isAttacking_ = false;                //  !<  攻撃中フラグ
+    protected bool isHitting_ = false;                  //  !<  被ダメージフラグ
     protected bool isJumping_ = false;                  //  !<  ジャンプ中フラグ
+    protected object[] logRegistKey_ = new object[(int)WeaponType.Max];
 
     const float AttackFinishFrame_ = 60;                //  !<  攻撃終了時間
     float currentAttackFrame_ = AttackFinishFrame_;     //  !<  現在の攻撃時間
 
-    protected object[] logRegistKey_ = new object[(int)WeaponType.Max];
+    float currentInvisibleTime_ = 0f;                   //  !<  被ダメージ時間
+    float degree_;                                      //  !<  角度
+
+    Weapon[] weaponGroupType_ = new Weapon[(int)WeaponType.Max];      //  !<  所持している武器の種類の一覧
 
     public Vector2 Spd
     {
@@ -46,11 +44,6 @@ public class Character : MonoBehaviour
     public Weapon EquipmentWeapon
     {
         get { return equipmentWeapon_; }
-    }
-    public WeaponType EquipmentWeaponType
-    {
-        get { return equipmentWeaponType_; }
-        set { equipmentWeaponType_ = value; }
     }
     public float Power
     {
@@ -85,35 +78,27 @@ public class Character : MonoBehaviour
         direction_ = transform.localScale;
         degree_ = 0f;
 
-        weaponGroup_[(int)WeaponType.Punch] = transform.GetChild(0).gameObject;
-        weaponGroup_[(int)WeaponType.Sword] = transform.GetChild(1).gameObject;
+        Transform arm = transform.GetChild(0).transform.GetChild(0);
+
+        weaponGroupType_[(int)WeaponType.Punch] = arm.GetChild(0).gameObject.GetComponent<Weapon>();
+        weaponGroupType_[(int)WeaponType.Sword] = arm.GetChild(1).gameObject.GetComponent<Weapon>();
 
         //  TODO    :   未実装
-        //weaponGroup_[(int)WeaponType.Shield] = transform.GetChild(2).gameObject;
-        //weaponGroup_[(int)WeaponType.Bow] = transform.GetChild(3).gameObject;
+        //weaponGroup_[(int)WeaponType.Shield] = arm.GetChild(2).gameObject;
+        //weaponGroup_[(int)WeaponType.Bow] = arm.GetChild(3).gameObject;
 
-        equipmentWeapon_ = weaponGroup_[(int)WeaponType.Punch].GetComponent<Weapon>();
-        equipmentWeaponType_ = equipmentWeapon_.ThisWeaponType;
+        equipmentWeapon_ = weaponGroupType_[(int)WeaponType.Punch].GetComponent<Weapon>();
 
         for (int lWeaponType = 0; lWeaponType < (int)WeaponType.Max; lWeaponType++)
         {// パンチ以外の武器を停止
 
-            if (!weaponGroup_[lWeaponType])
+            if (!weaponGroupType_[lWeaponType] ||
+                lWeaponType == (int)WeaponType.Punch)
                 continue;
 
-            weaponGroupType_[lWeaponType] = weaponGroup_[lWeaponType].GetComponent<Weapon>();
-
-            if (lWeaponType == (int)WeaponType.Punch)
-                continue;
-
-            weaponGroup_[lWeaponType].SetActive(false);
+            weaponGroupType_[lWeaponType].gameObject.SetActive(false);
         }
-#if false
-        weaponGroup_[(int)WeaponType.Punch].SetActive(false);
-        weaponGroup_[(int)WeaponType.Sword].SetActive(true);
-#endif
     }
-
     protected void Update()
     {
         pos_ = transform.position;
@@ -126,11 +111,38 @@ public class Character : MonoBehaviour
                 Logger.RemoveLog(logRegistKey_[(int)LogNum.Attack]);
             }
         }
+
+        if (!isHitting_)
+            return;
+
+        currentInvisibleTime_ += Time.deltaTime;
+        if (currentInvisibleTime_ > 1f)
+        {// 被ダメージ状態から1秒たったら普通の状態
+            currentInvisibleTime_ = 0f;
+            isHitting_ = false;
+            Logger.RemoveLog(logRegistKey_[(int)LogNum.TakeDamage]);
+        }
+    }
+
+    public void Initialize(int argWeaponTypeIndex, int argLife, Vector2 argEntryPos)
+    {
+        isLiving_ = true;
+        gameObject.SetActive(true);
+        life_ = argLife;
+        ChangeWeapon(argWeaponTypeIndex);
+        transform.position = argEntryPos;
+    }
+
+    protected virtual void ChoiceWeapon(WeaponType argWeaponType = WeaponType.Max, GameObject argGameObject = null)
+    {
+        ChangeWeapon((int)argWeaponType);
+        WeaponManager.Instance.RemoveActiveWeapon(argGameObject, 0);
     }
 
     public virtual void Attack()
     {
-        // TODO    :   武器のON、OFF
+        //  TODO    :   武器の当たり判定のON、OFF
+        //  TODO    :   animation
 
         rigid2d_.velocity = new Vector2(0, 0);
         isAttacking_ = true;
@@ -138,22 +150,40 @@ public class Character : MonoBehaviour
         Logger.Log(logRegistKey_[(int)LogNum.Attack], logRegistKey_[(int)LogNum.Attack] + weaponTypeName);
     }
 
-    public void ChangeWeapon(WeaponType argWeaponType)
+    public void ChangeWeapon(int argWeaponTypeIndex)
     {
         //  現在の武器をシャットダウン
         equipmentWeapon_.gameObject.SetActive(false);
-        switch(argWeaponType)
-        {//  指定の武器をスタートアップ
-            case WeaponType.Sword:
-                weaponGroup_[(int)WeaponType.Sword].SetActive(true);
-                equipmentWeapon_ = weaponGroupType_[(int)WeaponType.Sword];
-                break;
-            case WeaponType.Shield:
 
-                break;
-            case WeaponType.Bow:
+        //  指定の武器をスタートアップ
+        weaponGroupType_[argWeaponTypeIndex].gameObject.SetActive(true);
+        equipmentWeapon_ = weaponGroupType_[argWeaponTypeIndex];
 
-                break;
+    }
+
+    protected void TriggerStay2D(Weapon argWeapon, Collider2D argCollision, int argDamage)
+    {
+        if (argWeapon && !argCollision.gameObject.transform.parent)
+        {// 落ちている武器に触れていれば
+            ChoiceWeapon(argWeapon.ThisWeaponType, argCollision.gameObject);
+        }
+        //  TODO    :   add knock back
+        if (isHitting_)
+            return;
+
+        //  落ちている武器ではダメージは無し
+        if (!argCollision.gameObject.transform.parent)
+            return;
+
+        Logger.Log(logRegistKey_[(int)LogNum.TakeDamage], argCollision.tag + " : " + logRegistKey_[(int)LogNum.TakeDamage] + argDamage.ToString() + " Damage!!");
+
+        isHitting_ = true;
+        life_ -= argDamage;
+
+        if (life_ <= 0)
+        {// 死亡処理
+            life_ = 0;
+            isLiving_ = false;
         }
     }
 }

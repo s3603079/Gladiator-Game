@@ -16,10 +16,12 @@ public class VirtualChatactor : MonoBehaviour {
     private KillCount _killCount;
 
     private int _weaponType;
+    private float timer;
 
     // Use this for initialization
     void Start () {
         _health = _healthMax;
+        timer = 0f;
 	}
 
     void Update()
@@ -28,11 +30,14 @@ public class VirtualChatactor : MonoBehaviour {
         {
             _killCount.AddKillCount();//キルカウント＋１
         }
-
-        if(Time.time%10==0)
+        //デバッグ----------------------------------
+        timer += Time.deltaTime;
+        if(timer>=2f)
         {
             _weaponType++;
+            timer = 0f;
         }
+        //-------------------------------------------
     }
 
     public bool IsLiving()
@@ -63,6 +68,6 @@ public class VirtualChatactor : MonoBehaviour {
 
     public int WeaponType()
     {
-        return _weaponType;
+        return _weaponType%4;
     }
 }
