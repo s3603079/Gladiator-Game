@@ -9,9 +9,8 @@ public class BaseEnemy : Character
     void Start()
     {
         base.Start();
-        life_ = 100;
         power_ = 1f;
-        spd_ = new Vector2(0.05f, 5f);
+        spd_ = new Vector2(spd_ .x * 0.01f, spd_.y);    //  !<  速度の補正
         ai_ = GetComponent<EnemyAI>();
         logRegistKey_[(int)LogNum.Attack] = "Enemy Attaking : ";
         logRegistKey_[(int)LogNum.TakeDamage] = "Player Attack for Enemy!! ";

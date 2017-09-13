@@ -8,8 +8,6 @@ public class TestPlayer : Character
 
     void Start ()
     {
-        spd_ = new Vector2(5f, 5f);
-        life_ = 1000;
         power_ = 10;
         base.Start();
         logRegistKey_[(int)LogNum.Attack] = "Player Attaking : ";
@@ -77,6 +75,7 @@ public class TestPlayer : Character
     {
         if (isAttacking_)
             return;
+
         if (Input.GetKey(KeyCode.RightArrow))
         {
             rigid2d_.velocity = new Vector2(spd_.x, rigid2d_.velocity.y);
@@ -87,8 +86,12 @@ public class TestPlayer : Character
         }
         if (Input.GetKeyDown(KeyCode.UpArrow) && !isJumping_)
         {
+            base.Jump();
+
+#if false
             isJumping_ = true;
             rigid2d_.velocity = new Vector2(rigid2d_.velocity.x, spd_.y);
+#endif
         }
     }
 

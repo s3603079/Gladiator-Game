@@ -106,8 +106,12 @@ public class EnemyAI : MonoBehaviour
             argBaseEnemy.IsJumping)
             return;
 
+        argBaseEnemy.Jump();
+
+#if false
         argBaseEnemy.IsJumping = true;
         argBaseEnemy.RigitBody2D.velocity = new Vector2(argBaseEnemy.RigitBody2D.velocity.x, argBaseEnemy.Spd.y);
+#endif
     }
-#endregion Move
+    #endregion Move
 }

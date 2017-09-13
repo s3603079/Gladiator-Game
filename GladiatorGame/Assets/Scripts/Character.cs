@@ -11,24 +11,28 @@ enum LogNum
 
 public class Character : MonoBehaviour
 {
+    [SerializeField]
+    protected Vector2 spd_ = new Vector2(5.0f, 2.0f);   //  !<  移動速度
+    [SerializeField]
+    protected int life_;                                //  !<  耐久値
+    [SerializeField]
+    float InvisibleTime  = 1f;                          //  !<  最大無敵時間
+
     protected Weapon equipmentWeapon_;                  //  !<  装備している武器
     protected Rigidbody2D rigid2d_;                     //  !<  剛体
     protected Vector2 pos_;                             //  !<  座標
-    protected Vector2 spd_;                             //  !<  移動速度
     protected Vector2 direction_;                       //  !<  画像の向き
     protected float power_;                             //  !<  攻撃力
-    protected int life_;                                //  !<  耐久値
     protected bool isLiving_ = true;                    //  !<  生死判定フラグ
     protected bool isAttacking_ = false;                //  !<  攻撃中フラグ
     protected bool isHitting_ = false;                  //  !<  被ダメージフラグ
     protected bool isJumping_ = false;                  //  !<  ジャンプ中フラグ
-    protected object[] logRegistKey_ = new object[(int)WeaponType.Max];
+    protected object[] logRegistKey_ = new object[(int)WeaponType.Max]; //  !<  デバック用ログ出力
 
     const float AttackFinishFrame_ = 60;                //  !<  攻撃終了時間
     float currentAttackFrame_ = AttackFinishFrame_;     //  !<  現在の攻撃時間
 
     float currentInvisibleTime_ = 0f;                   //  !<  被ダメージ時間
-    float degree_;                                      //  !<  角度
 
     Weapon[] weaponGroupType_ = new Weapon[(int)WeaponType.Max];      //  !<  所持している武器の種類の一覧
 
@@ -76,7 +80,6 @@ public class Character : MonoBehaviour
     {
         rigid2d_ = GetComponent<Rigidbody2D>();
         direction_ = transform.localScale;
-        degree_ = 0f;
 
         Transform arm = transform.GetChild(0).transform.GetChild(0);
 
@@ -116,7 +119,7 @@ public class Character : MonoBehaviour
             return;
 
         currentInvisibleTime_ += Time.deltaTime;
-        if (currentInvisibleTime_ > 1f)
+        if (currentInvisibleTime_ > InvisibleTime)
         {// 被ダメージ状態から1秒たったら普通の状態
             currentInvisibleTime_ = 0f;
             isHitting_ = false;
@@ -148,6 +151,16 @@ public class Character : MonoBehaviour
         isAttacking_ = true;
         string weaponTypeName = equipmentWeapon_.ThisWeaponType.ToString();
         Logger.Log(logRegistKey_[(int)LogNum.Attack], logRegistKey_[(int)LogNum.Attack] + weaponTypeName);
+    }
+
+    public void Jump()
+    {
+        if (isJumping_)
+            return;
+
+        isJumping_ = true;
+        rigid2d_.AddForce(transform.up * spd_.y * 200f);
+
     }
 
     public void ChangeWeapon(int argWeaponTypeIndex)
