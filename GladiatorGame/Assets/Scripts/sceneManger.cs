@@ -67,8 +67,6 @@ public class sceneManger : MonoBehaviour {
         else if (string.Equals(selection, "quit") && GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.One))
         {
             Application.Quit();
-<<<<<<< HEAD
-=======
         }
     }
 
@@ -81,9 +79,7 @@ public class sceneManger : MonoBehaviour {
         else if(GamePad.GetButtonDown(GamePad.Button.B, GamePad.Index.One)){
 
             SceneManager.LoadScene(multiPlayerSceneName);
->>>>>>> develop
         }
-
     }
 
     void singleScene()

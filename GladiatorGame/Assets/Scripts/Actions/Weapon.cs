@@ -13,7 +13,9 @@ public enum WeaponType
 public class Weapon : MonoBehaviour
 {
     protected float attackedReach_;                             //  !<  武器の届く距離
-    protected WeaponType weakToType_, strengthToType_, thisType_;   //  !<  武器の種類と相性
+    protected WeaponType weakToType_;
+    protected WeaponType strengthToType_;
+    protected WeaponType thisType_;   //  !<  武器の種類と相性
     
     float gravity_ = 0.0f;
     float accel_ = 9.8f * 0.001f;
@@ -59,29 +61,15 @@ public class Weapon : MonoBehaviour
     {
     }
 
-<<<<<<< HEAD
-        void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         //  装備されていたら判定なし
         if (gameObject.transform.parent)
             return;
 
-        if (!WeaponManager.Instance.ActiveWeapon && collision.gameObject.tag == "Ground")
-        {// 接地処理
-            rigid2D_.gravityScale = 0.0f;
-            rigid2D_.velocity = new Vector2(0.0f, 0.0f);
-            WeaponManager.Instance.ActiveWeapon = this;
-        }
-
         //  キャラクターが取得したら
         var charcter = collision.gameObject.GetComponent<Character>();
         if (!charcter)
             return;
-
-        charcter.ChangeWeapon(thisType_);
-        WeaponManager.Instance.RemoveActiveWeapon(gameObject);
     }
-
-=======
->>>>>>> feature/Enemy
 }

@@ -5,10 +5,9 @@ using UnityEngine;
 public class Shield : Weapon {
 
     protected override void Start() {
-        weaponDestroyTime_ = 1f;
         attackedReach_ = 1.0f;
-        weakType_ = WeaponType.Punch;
-        strengthType_ = WeaponType.Bow;
+        weakToType_ = WeaponType.Punch;
+        strengthToType_ = WeaponType.Bow;
         thisType_ = WeaponType.Sword;
         base.Start();
     }

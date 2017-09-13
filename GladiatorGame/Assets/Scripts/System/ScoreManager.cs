@@ -55,13 +55,8 @@ public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
 
     public void AddScore()
     {
-<<<<<<< HEAD
-        ///*長時間生き残ると、スコアが高い*/
-        //_score = (int)_time.GetTime() * 10 + _killCount.GetKillNumber() * 100;
-=======
         /*長時間生き残ると、スコアが高い*/
-        _score = (int)(Time.time - _timer) * 10 + _killCount.GetKillNumber() * 100;
->>>>>>> feature/Enemy
+        //_score = (int)_time.GetTime() * 10 + _killCount.GetKillNumber() * 100;
     }
 
     public int GetScore()
