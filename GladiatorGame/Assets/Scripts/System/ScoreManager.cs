@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
 {
     //経過時間
-    [SerializeField]
-    GameManager _time;
+    private float _timer;
 
     //キルカウント
     [SerializeField]
@@ -37,6 +36,7 @@ public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
     {
         _score = 0;
         _displayScore = _score;
+        _timer = Time.time;
     }
 
     // Update is called once per frame
@@ -56,7 +56,7 @@ public class ScoreManager : SingletonMonoBehaviour<ScoreManager>
     public void AddScore()
     {
         /*長時間生き残ると、スコアが高い*/
-        _score = (int)_time.GetTime() * 10 + _killCount.GetKillNumber() * 100;
+        _score = (int)(Time.time - _timer) * 10 + _killCount.GetKillNumber() * 100;
     }
 
     public int GetScore()
