@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:GladiatorGame/Assets/Scripts/Actions/Punch.cs.meta
+guid: f8e965c0937ce1746927840b44ae0ce0
+timeCreated: 1504686308
+=======
+guid: 50b83ba4d4e380c4c88e6aa54063640e
+timeCreated: 1505266559
+>>>>>>> develop:Gladiatores/Assets/Scripts/Actions/Punch.cs.meta
+licenseType: Pro
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
